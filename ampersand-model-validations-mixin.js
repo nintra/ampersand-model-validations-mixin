@@ -20,7 +20,7 @@ function _validateIsNotBlank(def){
 
 //Validates email types using regex.
 function _validateIsEmail(def){
-    var emailRegEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/i;
+    var emailRegEx = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w+)+$/i;
 
     return emailRegEx.test(def.attrValue);
 }
