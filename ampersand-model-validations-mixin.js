@@ -26,29 +26,35 @@ function _validateIsEmail(def){
 }
 
 function _processValidation(def){
-    //check for dependecy object and if it contains a value.
+    //check for dependency object and if it contains a value.
     if(has(def, 'depends')){
         var dependAttr;
-        if(includes(def.depends.name, '.')){
-            var dependsValueArray = def.depends.name.split('.');
-            console.log(this.attributes);
-            dependAttr = this.attributes[dependsValueArray[0]][dependsValueArray[1]];
-            if(isEmpty(dependAttr)){
-                return;
-            }
-        }
-        else{
-            dependAttr = this.attributes[def.depends.name];
-        }
 
-        if(has(def.depends, 'value')){
-            if(dependAttr !== def.depends.value){
+        if (typeof(def.depends) === 'function') {
+            if (!def.depends.call(this, def)) {
                 return;
             }
-        }
-        else{
-            if(isEmpty(dependAttr) === true){
-                return;
+
+        } else {
+            if (includes(def.depends.name, '.')) {
+                var dependsValueArray = def.depends.name.split('.');
+                dependAttr = this.attributes[dependsValueArray[0]][dependsValueArray[1]];
+                if (isEmpty(dependAttr)){
+                    return;
+                }
+            } else {
+                dependAttr = this.attributes[def.depends.name];
+            }
+
+            if (has(def.depends, 'value')) {
+                if (dependAttr !== def.depends.value) {
+                    return;
+                }
+
+            } else {
+                if (isEmpty(dependAttr) === true) {
+                    return;
+                }
             }
         }
     }
